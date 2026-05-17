@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Andrology">
+<meta name="theme-color" content="#0b1628">
+<title>Andrology Surgical Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:  #0b1628;
+  --navy2: #112240;
+  --navy3: #1a3356;
+  --teal:  #00c9a7;
+  --teal2: #00a88a;
+  --gold:  #f5a623;
+  --red:   #e05c5c;
+  --green: #4caf82;
+  --text:  #e8edf5;
+  --text2: #9aafc7;
+  --text3: #5e7a9a;
+  --border: rgba(255,255,255,0.08);
+  --card:   rgba(17,34,64,0.9);
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --radius: 12px;
+  --radius2: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  min-height: 100vh;
+  cursor: pointer;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(0,201,167,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(245,166,35,0.05) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ===== LOGIN ===== */
+#login-screen {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; background: var(--navy);
+}
+.login-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 52px;
+  width: 420px; max-width: 95vw;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow), 0 0 80px rgba(0,201,167,0.06);
+  text-align: center;
+  animation: fadeUp 0.5s ease;
+}
+.login-logo {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, var(--teal), var(--navy3));
+  border-radius: 16px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 28px; margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(0,201,167,0.25);
+}
+.login-box h1 { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 6px; }
+.login-box .sub { color: var(--text2); font-size: 14px; margin-bottom: 32px; }
+
+/* ===== FORMS ===== */
+.form-group { margin-bottom: 14px; text-align: left; }
+.form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0,201,167,0.12);
+}
+.form-group select option { background: var(--navy2); }
+.form-group textarea { resize: vertical; min-height: 70px; }
+.form-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 22px; border-radius: var(--radius2);
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.btn-primary { background: linear-gradient(135deg, var(--teal), var(--teal2)); color: var(--navy); box-shadow: 0 4px 16px rgba(0,201,167,0.3); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,201,167,0.4); }
+.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+.btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.btn-danger { background: rgba(224,92,92,0.15); color: var(--red); border: 1px solid rgba(224,92,92,0.3); }
+.btn-danger:hover { background: rgba(224,92,92,0.25); }
+.btn-gold { background: linear-gradient(135deg, var(--gold), #e09415); color: var(--navy); }
+.btn-gold:hover { transform: translateY(-1px); }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-full { width: 100%; }
+
+.error-msg {
+  background: rgba(224,92,92,0.12); border: 1px solid rgba(224,92,92,0.3);
+  border-radius: var(--radius2); color: #f08080;
+  font-size: 13px; padding: 10px 14px; margin-bottom: 14px; display: none;
+}
+
+/* ===== APP SHELL ===== */
+#app { display: none; position: relative; z-index: 1; }
+
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  background: rgba(11,22,40,0.95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 100;
+}
+.h-brand { display: flex; align-items: center; gap: 12px; }
+.h-icon { width: 38px; height: 38px; background: linear-gradient(135deg, var(--teal), var(--navy3)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.h-title { font-family: 'DM Serif Display', serif; font-size: 18px; line-height: 1; }
+.h-sub { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+.h-actions { display: flex; align-items: center; gap: 10px; }
+.h-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
+
+/* ALERTS BANNER */
+#alerts-banner {
+  background: linear-gradient(90deg, rgba(245,166,35,0.1), rgba(245,166,35,0.04));
+  border-bottom: 1px solid rgba(245,166,35,0.2);
+  padding: 9px 28px;
+  display: none; align-items: center; gap: 10px; font-size: 13px;
+}
+#alerts-banner .ab-text { color: var(--gold); flex: 1; }
+#alerts-banner .ab-badge { background: var(--gold); color: var(--navy); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+
+/* MAIN */
+.main { padding: 28px; max-width: 1440px; margin: 0 auto; }
+
+/* ===== STATS ===== */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 28px; }
+.stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 22px;
+  backdrop-filter: blur(10px); transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 6px; }
+.stat-value { font-family: 'DM Serif Display', serif; font-size: 34px; line-height: 1; }
+.stat-sub { font-size: 12px; color: var(--text2); margin-top: 3px; }
+.st::before { content:''; display:block; height:3px; border-radius:2px; margin-bottom:12px; }
+.st-teal::before { background: var(--teal); }
+.st-gold::before { background: var(--gold); }
+.st-red::before  { background: var(--red); }
+.st-green::before{ background: var(--green); }
+.st-blue::before { background: #3b82f6; }
+.st-purple::before { background: #a855f7; }
+
+/* BREACH SUMMARY CARD */
+.breach-summary {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 22px;
+}
+.breach-summary h3 { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+.rag-row { display: flex; gap: 10px; }
+.rag-pill { flex: 1; text-align: center; border-radius: var(--radius2); padding: 12px 6px; }
+.rag-pill .rn { font-family: 'DM Serif Display', serif; font-size: 26px; line-height: 1; }
+.rag-pill .rl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; font-weight: 600; }
+.rag-r { background: rgba(224,92,92,0.12); color: var(--red); border: 1px solid rgba(224,92,92,0.2); }
+.rag-a { background: rgba(245,166,35,0.12); color: var(--gold); border: 1px solid rgba(245,166,35,0.2); }
+.rag-g { background: rgba(76,175,130,0.1);  color: var(--green);border: 1px solid rgba(76,175,130,0.2); }
+
+/* ===== TABS ===== */
+.tab-bar { display: flex; gap: 4px; background: rgba(255,255,255,0.04); border-radius: var(--radius2); padding: 4px; width: fit-content; margin-bottom: 20px; }
+.tab { padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; color: var(--text2); background: transparent; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+.tab.active { background: var(--navy2); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+/* ===== TOOLBAR ===== */
+.toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.search-box { flex: 1; min-width: 220px; position: relative; }
+.search-box input { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius2); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; padding: 10px 14px 10px 38px; outline: none; transition: border-color 0.2s; }
+.search-box input:focus { border-color: var(--teal); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; pointer-events: none; }
+.filter-sel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius2); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; padding: 10px 12px; outline: none; cursor: pointer; }
+.filter-sel option { background: var(--navy2); }
+
+/* ===== TABLE ===== */
+.table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); backdrop-filter: blur(10px); overflow: hidden; }
+.table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; border-bottom: 1px solid var(--border); }
+.table-title { font-weight: 600; font-size: 15px; }
+.table-count { font-size: 12px; color: var(--text2); }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: rgba(255,255,255,0.02);
+  padding: 11px 14px; text-align: left;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text3); border-bottom: 1px solid var(--border);
+  white-space: nowrap; cursor: pointer; user-select: none; transition: color 0.2s;
+}
+thead th:hover { color: var(--text2); }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; cursor: pointer; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.03); }
+tbody td { padding: 12px 14px; font-size: 14px; vertical-align: middle; }
+.p-name { font-weight: 600; }
+.p-sub  { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 2px; }
+.date-cell { font-family: 'DM Mono', monospace; font-size: 13px; }
+.date-soon    { color: var(--gold); }
+.date-overdue { color: var(--red); }
+.sort-arr { margin-left: 4px; opacity: 0.35; }
+.sort-arr.on { opacity: 1; color: var(--teal); }
+.act-cell { display: flex; gap: 6px; }
+
+/* BREACH BAR IN TABLE */
+.mini-breach { margin-top: 5px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.06); overflow: hidden; width: 100px; }
+.mini-fill { height: 100%; border-radius: 2px; }
+.mf-g { background: var(--green); }
+.mf-a { background: var(--gold); }
+.mf-r { background: var(--red); }
+
+/* CHECKLIST MINI */
+.cl-mini { font-size: 11px; margin-top: 3px; }
+
+/* BADGE */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.b-dot { width: 5px; height: 5px; border-radius: 50%; }
+.b-pending   { background: rgba(245,166,35,0.14); color: var(--gold); }
+.b-scheduled { background: rgba(0,201,167,0.14);  color: var(--teal); }
+.b-urgent    { background: rgba(224,92,92,0.16);   color: var(--red); }
+.b-waiting   { background: rgba(158,175,199,0.12); color: var(--text2); }
+.b-completed { background: rgba(76,175,130,0.12);  color: var(--green); }
+.bd-pending   { background: var(--gold); }
+.bd-scheduled { background: var(--teal); }
+.bd-urgent    { background: var(--red); }
+.bd-waiting   { background: var(--text2); }
+.bd-completed { background: var(--green); }
+
+/* EMPTY */
+.empty-state { text-align: center; padding: 56px 20px; color: var(--text3); }
+.empty-state .ei { font-size: 44px; margin-bottom: 14px; opacity: 0.35; }
+.empty-state h3 { font-size: 16px; color: var(--text2); margin-bottom: 6px; }
+
+/* UPCOMING */
+.upcoming-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 14px 18px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 16px; cursor: pointer;
+  transition: background 0.15s;
+}
+.upcoming-card:hover { background: rgba(26,51,86,0.6); }
+.uc-info { flex: 1; }
+.uc-info h4 { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+.uc-info p  { font-size: 12px; color: var(--text2); }
+.uc-date { text-align: right; }
+.uc-d { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; }
+.uc-days { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* ===== MODAL ===== */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--navy2); border: 1px solid var(--border);
+  border-radius: 16px; width: 640px; max-width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  animation: fadeUp 0.3s ease;
+}
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 26px 18px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--navy2); z-index: 1; }
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 20px; }
+.modal-close { background: rgba(255,255,255,0.07); border: none; color: var(--text2); width: 30px; height: 30px; border-radius: 7px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.modal-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+.modal-body { padding: 22px 26px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 26px 22px; border-top: 1px solid var(--border); }
+
+/* MODAL TABS */
+.mtabs { display: flex; gap: 4px; background: rgba(255,255,255,0.04); border-radius: 8px; padding: 4px; margin-bottom: 20px; }
+.mtab { flex: 1; text-align: center; padding: 8px 4px; border-radius: 5px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text3); font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.mtab.active { background: var(--navy3); color: var(--text); }
+.mtab-section { display: none; }
+.mtab-section.active { display: block; }
+
+/* SECTION DIVIDER */
+.sec-div { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal); margin: 20px 0 14px; display: flex; align-items: center; gap: 10px; }
+.sec-div::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* CHECKLIST IN MODAL */
+.checklist { display: flex; flex-direction: column; gap: 8px; }
+.check-item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius2); padding: 11px 14px; cursor: pointer; transition: all 0.2s; }
+.check-item:hover { background: rgba(255,255,255,0.06); }
+.check-item.done { background: rgba(76,175,130,0.07); border-color: rgba(76,175,130,0.2); }
+.check-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; transition: all 0.2s; }
+.check-item.done .check-box { background: var(--green); border-color: var(--green); color: #fff; }
+.check-name { font-size: 14px; font-weight: 500; flex: 1; }
+.check-meta { font-size: 11px; color: var(--text3); }
+.check-item.done .check-meta { color: var(--green); }
+
+/* DETAIL VIEW */
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.detail-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.d-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 3px; }
+.d-val   { font-size: 14px; font-weight: 500; }
+.notes-box { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: var(--radius2); padding: 12px 14px; font-size: 14px; color: var(--text2); line-height: 1.6; min-height: 50px; white-space: pre-wrap; }
+
+/* BREACH BAR LARGE */
+.breach-bar-wrap { margin: 12px 0; }
+.breach-bar-bg { height: 10px; border-radius: 5px; background: rgba(255,255,255,0.06); overflow: hidden; margin-bottom: 5px; }
+.breach-bar-fill { height: 100%; border-radius: 5px; transition: width 0.5s ease; }
+.bbf-g { background: var(--green); }
+.bbf-a { background: var(--gold); }
+.bbf-r { background: var(--red); }
+.breach-label-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); }
+
+/* EMAIL */
+.email-preview { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius2); padding: 14px; font-size: 12px; color: var(--text2); line-height: 1.7; max-height: 220px; overflow-y: auto; font-family: 'DM Mono', monospace; white-space: pre-wrap; }
+
+/* TOAST */
+#toast-container { position: fixed; bottom: 22px; right: 22px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: var(--navy2); border: 1px solid var(--border); border-radius: var(--radius2); padding: 12px 16px; font-size: 14px; min-width: 220px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow); animation: slideIn 0.3s ease; }
+.t-success { border-left: 3px solid var(--green); }
+.t-error   { border-left: 3px solid var(--red); }
+.t-info    { border-left: 3px solid var(--teal); }
+
+@keyframes fadeUp  { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideIn { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:translateX(0); } }
+@keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+@media print {
+  body { background:#fff; color:#000; }
+  .header, .toolbar, .tab-bar, #alerts-banner, .act-cell, .btn { display:none !important; }
+  .main { padding:0; }
+  .table-wrap { border:1px solid #ccc; }
+}
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .header { padding: 12px 16px; }
+  .main { padding: 16px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .form-row, .form-row-3 { grid-template-columns: 1fr; }
+  .detail-grid { grid-template-columns: 1fr 1fr; }
+  .modal { border-radius: 16px 16px 0 0; position: fixed; bottom: 0; left: 0; right: 0; max-width: 100%; max-height: 95vh; }
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  thead th:nth-child(n+6) { display: none; }
+  tbody td:nth-child(n+6) { display: none; }
+  .toolbar { gap: 8px; }
+  .h-sub { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">⚕️</div>
+    <h1>Andrology Tracker</h1>
+    <p class="sub">Secure Surgical Patient Management &middot; NHS</p>
+    <div id="login-error" class="error-msg">Incorrect password. Please try again.</div>
+    <div class="form-group">
+      <label>Department Password</label>
+      <input type="password" id="login-pw" placeholder="Enter department password" autocomplete="current-password">
+    </div>
+    <div id="login-btn" style="margin-top:12px;background:linear-gradient(135deg,#00c9a7,#00a88a);color:#0b1628;font-weight:700;font-size:17px;padding:16px;border-radius:8px;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation">
+      🔐 Access System
+    </div>
+    <p style="font-size:11px;color:#5e7a9a;margin-top:16px;text-align:center">Default password: <strong style="color:#9aafc7;font-family:monospace">andrology2024</strong></p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="h-brand">
+      <div class="h-icon">⚕️</div>
+      <div>
+        <div class="h-title">Andrology Tracker</div>
+        <div class="h-sub">Surgical Patient Management</div>
+      </div>
+    </div>
+    <div class="h-actions">
+      <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2)">
+        <div class="h-dot"></div><span id="session-label">Department Session</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openChangePw()">⚙️ Settings</button>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- ALERTS BANNER -->
+  <div id="alerts-banner">
+    <span>⚠️</span>
+    <span class="ab-text" id="ab-text"></span>
+    <span class="ab-badge" id="ab-badge"></span>
+    <div id="banner-btn" style="background:rgba(245,166,35,0.15);color:var(--gold);border:1px solid rgba(245,166,35,0.3);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;white-space:nowrap">View All →</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- STATS -->
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <!-- TABS -->
+    <div class="tab-bar">
+      <button class="tab active" id="tab-patients" onclick="showTab('patients')">👥 All Patients</button>
+      <button class="tab" id="tab-upcoming" onclick="showTab('upcoming')">📅 Upcoming Surgeries</button>
+      <button class="tab" id="tab-breach" onclick="showTab('breach')">⏱ Breach Tracker</button>
+      <button class="tab" id="tab-analytics" onclick="showTab('analytics')">📊 Analytics</button>
+      <button class="tab" id="tab-export" onclick="showTab('export')">📤 Export</button>
+    </div>
+
+    <!-- PATIENTS VIEW -->
+    <div id="view-patients">
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search by name, ID, diagnosis, surgeon…" oninput="renderTable()">
+        </div>
+        <select class="filter-sel" id="f-status-filter" onchange="awaitingFilter=false;renderTable()">
+          <option value="">All Statuses</option>
+          <option>Pending</option><option>Waiting List</option>
+          <option>Scheduled</option><option>Urgent</option><option>Completed</option>
+        </select>
+        <select class="filter-sel" id="f-cancer-filter" onchange="renderTable()">
+          <option value="">All Cancer Types</option>
+          <option>Penile</option><option>Testicular</option>
+          <option>Bladder</option><option>Kidney</option><option>Other</option>
+        </select>
+        <button class="btn btn-primary" onclick="openAdd()">+ Add Patient</button>
+        <button class="btn btn-gold" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn btn-ghost btn-sm" onclick="window.print()" title="Print">🖨️</button>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <span class="table-title">Patient Registry</span>
+          <span class="table-count" id="table-count"></span>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="sortBy('id')">ID <span class="sort-arr" id="sa-id">↕</span></th>
+                <th onclick="sortBy('name')">Patient Name <span class="sort-arr" id="sa-name">↕</span></th>
+                <th onclick="sortBy('age')">Age <span class="sort-arr" id="sa-age">↕</span></th>
+                <th onclick="sortBy('cancerType')">Cancer Type <span class="sort-arr" id="sa-cancerType">↕</span></th>
+                <th onclick="sortBy('status')">Status <span class="sort-arr" id="sa-status">↕</span></th>
+                <th onclick="sortBy('surgeryDate')">Surgery Date <span class="sort-arr" id="sa-surgeryDate">↕</span></th>
+                <th onclick="sortBy('surgeon')">Surgeon <span class="sort-arr" id="sa-surgeon">↕</span></th>
+                <th>62-wk Breach</th>
+                <th>Pre-Op</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patient-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPCOMING VIEW -->
+    <div id="view-upcoming" style="display:none">
+      <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px">Upcoming & Overdue Surgeries</h3>
+      <div id="upcoming-list"></div>
+    </div>
+
+    <!-- BREACH VIEW -->
+    <div id="view-breach" style="display:none">
+      <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px">62-Week RTT Breach Tracker</h3>
+      <div id="breach-list"></div>
+    </div>
+
+    <!-- ANALYTICS VIEW -->
+    <div id="view-analytics" style="display:none">
+      <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px">Analytics & Statistics</h3>
+      <div id="analytics-content"></div>
+    </div>
+
+    <!-- EXPORT VIEW -->
+    <div id="view-export" style="display:none">
+      <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px">Export & Email</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:560px">
+        <div class="stat-card st st-teal" style="cursor:pointer;display:flex;align-items:center;gap:14px" onclick="exportCSV()">
+          <span style="font-size:30px">📥</span>
+          <div><div style="font-size:15px;font-weight:600">Export to CSV</div><div style="font-size:12px;color:var(--text2);margin-top:3px">All patients with breach % and checklist — opens in Excel</div></div>
+        </div>
+        <div class="stat-card st st-blue" style="cursor:pointer;display:flex;align-items:center;gap:14px" onclick="openEmail()">
+          <span style="font-size:30px">📧</span>
+          <div><div style="font-size:15px;font-weight:600">Send Email Alert to Team</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Opens your email app pre-filled with urgent patients and breach risks</div></div>
+        </div>
+        <div class="stat-card st st-purple" style="cursor:pointer;display:flex;align-items:center;gap:14px" onclick="window.print()">
+          <span style="font-size:30px">🖨️</span>
+          <div><div style="font-size:15px;font-weight:600">Print Patient List</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Print-friendly version of the patient table</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modal-form">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="form-title">Add Patient</span>
+      <button class="modal-close" onclick="closeModal('modal-form')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mtabs">
+        <button class="mtab active" onclick="switchTab(0)">Patient</button>
+        <button class="mtab" onclick="switchTab(1)">Oncology</button>
+        <button class="mtab" onclick="switchTab(2)">Surgery</button>
+        <button class="mtab" onclick="switchTab(3)">Pre-Op Checklist</button>
+      </div>
+
+      <!-- TAB 0 -->
+      <div class="mtab-section active" id="mt0">
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="f-name" placeholder="Patient full name"></div>
+          <div class="form-group"><label>Date of Birth</label><input type="date" id="f-dob"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Hospital No / MRN</label><input type="text" id="f-mrn" placeholder="MRN-00000"></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="f-phone" placeholder="+44…"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>GP / Referring Doctor</label><input type="text" id="f-gp" placeholder="Dr. Smith"></div>
+          <div class="form-group"><label>Referral Date *</label><input type="date" id="f-referral-date"></div>
+        </div>
+        <div class="form-group"><label>First Appointment Date</label><input type="date" id="f-first-appt"></div>
+      </div>
+
+      <!-- TAB 1 -->
+      <div class="mtab-section" id="mt1">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cancer Type *</label>
+            <select id="f-cancer">
+              <option value="">Select…</option>
+              <option>Penile</option><option>Testicular</option>
+              <option>Bladder</option><option>Kidney</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Stage / Grade</label><input type="text" id="f-stage" placeholder="e.g. T2N0M0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Procedure Required</label><input type="text" id="f-procedure" placeholder="e.g. Radical Orchiectomy"></div>
+          <div class="form-group">
+            <label>Laterality</label>
+            <select id="f-laterality">
+              <option value="">N/A</option><option>Left</option><option>Right</option><option>Bilateral</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Clinical Notes</label><textarea id="f-notes" placeholder="MDT outcome, staging, relevant history…"></textarea></div>
+      </div>
+
+      <!-- TAB 2 -->
+      <div class="mtab-section" id="mt2">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Status *</label>
+            <select id="f-status">
+              <option value="Pending">Pending</option>
+              <option value="Waiting List">Waiting List</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="Urgent">Urgent</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="f-priority">
+              <option value="Routine">Routine</option>
+              <option value="Soon">Soon (2–4 wks)</option>
+              <option value="Urgent">Urgent (&lt;2 wks)</option>
+              <option value="Emergency">Emergency</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Surgery Date</label><input type="date" id="f-surgery-date"></div>
+          <div class="form-group"><label>Surgery Time</label><input type="time" id="f-surgery-time"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Assigned Surgeon</label><input type="text" id="f-surgeon" placeholder="Mr. / Dr."></div>
+          <div class="form-group"><label>Theatre / Ward</label><input type="text" id="f-theatre" placeholder="Theatre 4"></div>
+        </div>
+        <div class="form-group"><label>Anaesthetist Notes</label><textarea id="f-anaes" placeholder="Anaesthetic review, concerns, special requirements…"></textarea></div>
+      </div>
+
+      <!-- TAB 3 -->
+      <div class="mtab-section" id="mt3">
+        <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Tap each item to mark as complete. Records your name and today's date.</p>
+        <div class="checklist" id="form-checklist"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-form')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePatient()">💾 Save Patient</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="detail-title">Patient Record</span>
+      <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="detail-del">🗑 Delete</button>
+      <div style="flex:1"></div>
+      <button class="btn btn-ghost" onclick="closeModal('modal-detail')">Close</button>
+      <button class="btn btn-primary" id="detail-edit">✏️ Edit</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal-overlay" id="modal-pw">
+  <div class="modal" style="width:420px">
+    <div class="modal-header">
+      <span class="modal-title">Change Department Password</span>
+      <button class="modal-close" onclick="closeModal('modal-pw')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="pw-error" class="error-msg"></div>
+      <div class="form-group"><label>Current Password</label><input type="password" id="pw-cur"></div>
+      <div class="form-group"><label>New Password (min 8 chars)</label><input type="password" id="pw-new"></div>
+      <div class="form-group"><label>Confirm New Password</label><input type="password" id="pw-conf"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-pw')">Cancel</button>
+      <button class="btn btn-primary" onclick="changePassword()">🔐 Update Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="modal-overlay" id="modal-email">
+  <div class="modal" style="width:560px">
+    <div class="modal-header">
+      <span class="modal-title">Send Email Alert</span>
+      <button class="modal-close" onclick="closeModal('modal-email')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Opens your email client pre-filled with urgent patients, upcoming surgeries, incomplete pre-op checklists and breach risks.</p>
+      <div class="form-row">
+        <div class="form-group"><label>Recipient Email(s)</label><input type="email" id="email-to" placeholder="team@nhs.net"></div>
+        <div class="form-group"><label>Your Name</label><input type="text" id="email-from" placeholder="Dr. / Mr. …"></div>
+      </div>
+      <div class="form-group"><label>Preview</label><div class="email-preview" id="email-preview"></div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-email')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendEmail()">📧 Open in Email App</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// ===== CRYPTO =====
+function xorEnc(text, key) {
+  const k = makeKey(key, 64);
+  return btoa(unescape(encodeURIComponent(
+    text.split('').map((c,i) => String.fromCharCode(c.charCodeAt(0) ^ k[i % k.length])).join('')
+  )));
+}
+function xorDec(enc, key) {
+  try {
+    const k = makeKey(key, 64);
+    const raw = decodeURIComponent(escape(atob(enc)));
+    return raw.split('').map((c,i) => String.fromCharCode(c.charCodeAt(0) ^ k[i % k.length])).join('');
+  } catch { return null; }
+}
+function makeKey(str, len) {
+  const a = [];
+  for (let i = 0; i < len; i++) { let v = 0; for (let j = 0; j < str.length; j++) v = (v * 31 + str.charCodeAt(j) + i * 13) & 0xff; a.push(v); }
+  return a;
+}
+function hashPw(pw) { let h = 5381; for (let i = 0; i < pw.length; i++) h = ((h << 5) + h) + pw.charCodeAt(i) | 0; return 'ph_' + Math.abs(h).toString(36) + '_' + pw.length; }
+
+// ===== STATE =====
+let SESSION_KEY = null, patients = [], editingId = null, sortCol = 'surgeryDate', sortDir = 1, formChecklist = {}, currentTab = 0, awaitingFilter = false;
+
+const STORE = 'andro_v4', PWHASH = 'andro_pw4';
+
+const CHECKLIST = [
+  { id:'mdt',        label:'MDT Discussion',    icon:'👥' },
+  { id:'pre_assess', label:'Pre-Assessment',    icon:'🩺' },
+  { id:'bloods',     label:'Bloods',            icon:'🩸' },
+  { id:'virology',   label:'Virology',          icon:'🧪' },
+  { id:'ecg',        label:'ECG',               icon:'💓' },
+  { id:'crossmatch', label:'Cross-Match',       icon:'🔬' },
+  { id:'imaging',    label:'Imaging',           icon:'🖥' },
+  { id:'consent',    label:'Consent Form',      icon:'📝' },
+  { id:'anaes',      label:'Anaesthetist Notes',icon:'💉' },
+  { id:'clerking',   label:'Clerking',          icon:'📋' },
+];
+
+// ===== AUTH =====
+function getHash() { return localStorage.getItem(PWHASH) || hashPw('andrology2024'); }
+
+function doLogin() {
+  var pwEl = document.getElementById('login-pw');
+  var pw = pwEl ? pwEl.value : '';
+  if (!pw) { return; }
+  var errEl = document.getElementById('login-error');
+  if (hashPw(pw) !== getHash()) {
+    if (errEl) errEl.style.display = 'block';
+    return;
+  }
+  SESSION_KEY = pw;
+  if (errEl) errEl.style.display = 'none';
+  var login = document.getElementById('login-screen');
+  var appEl = document.getElementById('app');
+  if (login) login.style.display = 'none';
+  if (appEl) appEl.style.display = 'block';
+  loadData();
+}
+
+function doLogout() { SESSION_KEY = null; patients = []; document.getElementById('app').style.display = 'none'; document.getElementById('login-screen').style.display = 'flex'; document.getElementById('login-pw').value = ''; }
+
+function openChangePw() { openModal('modal-pw'); }
+function changePassword() {
+  const cur = document.getElementById('pw-cur').value;
+  const nw = document.getElementById('pw-new').value;
+  const cf = document.getElementById('pw-conf').value;
+  const err = document.getElementById('pw-error');
+  err.style.display = 'none';
+  if (hashPw(cur) !== getHash()) { err.textContent = 'Current password incorrect.'; err.style.display = 'block'; return; }
+  if (nw.length < 8) { err.textContent = 'New password must be at least 8 characters.'; err.style.display = 'block'; return; }
+  if (nw !== cf) { err.textContent = 'Passwords do not match.'; err.style.display = 'block'; return; }
+  localStorage.setItem(STORE, xorEnc(JSON.stringify(patients), nw));
+  localStorage.setItem(PWHASH, hashPw(nw));
+  SESSION_KEY = nw;
+  closeModal('modal-pw');
+  toast('Password updated!', 'success');
+}
+
+// ===== DATA =====
+function loadData() {
+  const raw = localStorage.getItem(STORE);
+  if (!raw) { patients = sample(); saveData(); }
+  else {
+    const dec = xorDec(raw, SESSION_KEY);
+    if (!dec) { toast('Decryption failed', 'error'); patients = []; }
+    else { try { patients = JSON.parse(dec); } catch { patients = []; } }
+  }
+  renderAll();
+}
+function saveData() { localStorage.setItem(STORE, xorEnc(JSON.stringify(patients), SESSION_KEY)); }
+function today() { return new Date().toISOString().split('T')[0]; }
+function dPlus(n) { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().split('T')[0]; }
+
+function sample() {
+  return [
+    { id:'P-001', name:'John Hartley',   dob:'1968-03-15', mrn:'MRN-10234', phone:'07700900123', gp:'Dr. Patel',  referralDate:dPlus(-45), firstAppt:dPlus(-40), cancerType:'Testicular', stage:'T2N0M0',  procedure:'Radical Orchiectomy',          laterality:'Right', status:'Scheduled',    priority:'Soon',    surgeryDate:dPlus(7),  surgeryTime:'09:00', surgeon:'Mr. A. Khan',  theatre:'Theatre 2', notes:'Pre-op bloods done.', anaes:'No concerns. Standard GA.', checklist:{mdt:{done:true,by:'MDT Team',date:dPlus(-14)},pre_assess:{done:true,by:'Sister Jones',date:dPlus(-3)},bloods:{done:true,by:'Nurse Smith',date:dPlus(-5)},virology:{done:true,by:'Nurse Smith',date:dPlus(-5)},ecg:{done:false},crossmatch:{done:false},imaging:{done:true,by:'Radiology',date:dPlus(-10)},consent:{done:true,by:'Mr. A. Khan',date:dPlus(-7)},anaes:{done:true,by:'Dr. Green',date:dPlus(-3)},clerking:{done:false}}, createdAt:dPlus(-45) },
+    { id:'P-002', name:'Michael Torres', dob:'1955-07-22', mrn:'MRN-10891', phone:'07700900456', gp:'Dr. Brown',  referralDate:dPlus(-20), firstAppt:dPlus(-15), cancerType:'Bladder',   stage:'T3aN0M0', procedure:'Radical Prostatectomy (RALP)',  laterality:'N/A',   status:'Urgent',       priority:'Urgent',  surgeryDate:dPlus(3),  surgeryTime:'07:30', surgeon:'Mr. B. Singh', theatre:'Theatre 1', notes:'PSA rising rapidly.', anaes:'HTN — reviewed.', checklist:{mdt:{done:true,by:'MDT Team',date:dPlus(-10)},pre_assess:{done:true,by:'Sister Jones',date:dPlus(-2)},bloods:{done:true,by:'Nurse Smith',date:dPlus(-4)},virology:{done:true,by:'Nurse Smith',date:dPlus(-4)},ecg:{done:true,by:'Cardiology',date:dPlus(-3)},crossmatch:{done:true,by:'Haematology',date:dPlus(-1)},imaging:{done:true,by:'Radiology',date:dPlus(-8)},consent:{done:true,by:'Mr. B. Singh',date:dPlus(-5)},anaes:{done:true,by:'Dr. White',date:dPlus(-2)},clerking:{done:false}}, createdAt:dPlus(-20) },
+    { id:'P-003', name:'David Okonkwo',  dob:'1978-11-08', mrn:'MRN-11045', phone:'07700900789', gp:'Dr. Ali',   referralDate:dPlus(-70), firstAppt:dPlus(-65), cancerType:'Testicular', stage:'T1bN1M0', procedure:'Radical Orchiectomy + Biopsy',  laterality:'Left',  status:'Completed',    priority:'Routine', surgeryDate:dPlus(-21),surgeryTime:'11:00', surgeon:'Mr. A. Khan',  theatre:'Theatre 3', notes:'Post-op follow-up 6 weeks.', anaes:'Uneventful.', checklist:{mdt:{done:true,by:'MDT Team',date:dPlus(-35)},pre_assess:{done:true,by:'Sister Jones',date:dPlus(-28)},bloods:{done:true,by:'Nurse Smith',date:dPlus(-28)},virology:{done:true,by:'Nurse Smith',date:dPlus(-28)},ecg:{done:true,by:'Cardiology',date:dPlus(-25)},crossmatch:{done:true,by:'Haematology',date:dPlus(-22)},imaging:{done:true,by:'Radiology',date:dPlus(-30)},consent:{done:true,by:'Mr. A. Khan',date:dPlus(-25)},anaes:{done:true,by:'Dr. Lee',date:dPlus(-23)},clerking:{done:true,by:'F2 Doctor',date:dPlus(-22)}}, createdAt:dPlus(-70) },
+    { id:'P-004', name:'Robert Fleming', dob:'1963-05-19', mrn:'MRN-11302', phone:'07700900321', gp:'Dr. Green', referralDate:dPlus(-10), firstAppt:dPlus(-7),  cancerType:'Bladder',   stage:'T2bN0M0', procedure:'Radical Prostatectomy',        laterality:'N/A',   status:'Pending',      priority:'Routine', surgeryDate:'',        surgeryTime:'',      surgeon:'',             theatre:'',          notes:'Awaiting MDT. MRI booked.', anaes:'', checklist:{mdt:{done:false},pre_assess:{done:false},bloods:{done:false},virology:{done:false},ecg:{done:false},crossmatch:{done:false},imaging:{done:false},consent:{done:false},anaes:{done:false},clerking:{done:false}}, createdAt:dPlus(-10) },
+    { id:'P-005', name:'William Nguyen', dob:'1982-09-30', mrn:'MRN-11567', phone:'07700900654', gp:'Dr. Patel', referralDate:dPlus(-50), firstAppt:dPlus(-44), cancerType:'Penile',     stage:'T2N0M0',  procedure:'Partial Penectomy',            laterality:'N/A',   status:'Waiting List', priority:'Soon',    surgeryDate:dPlus(28), surgeryTime:'',      surgeon:'Mr. C. Obi',   theatre:'',          notes:'On waiting list. Patient informed.', anaes:'', checklist:{mdt:{done:true,by:'MDT Team',date:dPlus(-20)},pre_assess:{done:true,by:'Sister Jones',date:dPlus(-10)},bloods:{done:true,by:'Nurse Smith',date:dPlus(-10)},virology:{done:false},ecg:{done:false},crossmatch:{done:false},imaging:{done:true,by:'Radiology',date:dPlus(-20)},consent:{done:false},anaes:{done:false},clerking:{done:false}}, createdAt:dPlus(-50) },
+  ];
+}
+
+// ===== BREACH =====
+function breachInfo(p) {
+  if (!p.referralDate) return null;
+  const ref = new Date(p.referralDate);
+  const t = new Date(); t.setHours(0,0,0,0);
+  const days = Math.floor((t - ref) / 864e5);
+  const pct = Math.min(100, Math.round(days / (62*7) * 100));
+  const weeks = Math.floor(days / 7);
+  const rag = pct >= 100 ? 'r' : pct >= 75 ? 'a' : 'g';
+  return { days, weeks, pct, rag, weeksLeft: Math.max(0, 62 - weeks) };
+}
+
+// ===== RENDER ALL =====
+function renderAll() {
+  renderStats();
+  renderTable();
+  renderUpcoming();
+  renderBreach();
+  renderAlerts();
+}
+
+// ===== STATS =====
+function renderStats() {
+  const total = patients.length;
+  const sched = patients.filter(p => p.status === 'Scheduled').length;
+  const urgent = patients.filter(p => p.status === 'Urgent').length;
+  const comp = patients.filter(p => p.status === 'Completed').length;
+  const pend = patients.filter(p => p.status === 'Pending' || p.status === 'Waiting List').length;
+  const breachR = patients.filter(p => p.status !== 'Completed' && breachInfo(p)?.rag === 'r').length;
+  const breachA = patients.filter(p => p.status !== 'Completed' && breachInfo(p)?.rag === 'a').length;
+  const breachG = patients.filter(p => p.status !== 'Completed' && breachInfo(p)?.rag === 'g').length;
+
+  const cardStyle = 'cursor:pointer;transition:transform 0.15s;';
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card st st-teal" style="${cardStyle}" onclick="filterByStatus('')" title="Show all patients"><div class="stat-label">Total Patients</div><div class="stat-value">${total}</div><div class="stat-sub">Tap to show all</div></div>
+    <div class="stat-card st st-red" style="${cardStyle}" onclick="filterByStatus('Urgent')" title="Show urgent patients"><div class="stat-label">Urgent</div><div class="stat-value">${urgent}</div><div class="stat-sub">Tap to filter</div></div>
+    <div class="stat-card st st-gold" style="${cardStyle}" onclick="filterByStatus('Scheduled')" title="Show scheduled patients"><div class="stat-label">Scheduled</div><div class="stat-value">${sched}</div><div class="stat-sub">Tap to filter</div></div>
+    <div class="stat-card st st-green" style="${cardStyle}" onclick="filterByStatus('Completed')" title="Show completed patients"><div class="stat-label">Completed</div><div class="stat-value">${comp}</div><div class="stat-sub">Tap to filter</div></div>
+    <div class="stat-card st" style="border-top:3px solid var(--text3);${cardStyle}" onclick="filterByStatus('Pending')" title="Show pending patients"><div class="stat-label">Awaiting</div><div class="stat-value">${pend}</div><div class="stat-sub">Tap to filter</div></div>
+    <div class="breach-summary">
+      <h3>⏱ 62-Week Breach</h3>
+      <div class="rag-row">
+        <div class="rag-pill rag-r" style="cursor:pointer" onclick="showTab('breach')"><div class="rn">${breachR}</div><div class="rl">Breached</div></div>
+        <div class="rag-pill rag-a" style="cursor:pointer" onclick="showTab('breach')"><div class="rn">${breachA}</div><div class="rl">At Risk</div></div>
+        <div class="rag-pill rag-g" style="cursor:pointer" onclick="showTab('breach')"><div class="rn">${breachG}</div><div class="rl">On Track</div></div>
+      </div>
+    </div>
+  `;
+}
+
+function filterByStatus(status) {
+  showTab('patients');
+  const sel = document.getElementById('f-status-filter');
+  if (sel) {
+    // "Awaiting" card shows both Pending and Waiting List - use custom filter
+    if (status === 'Pending') {
+      sel.value = '';
+      awaitingFilter = true;
+    } else {
+      sel.value = status;
+      awaitingFilter = false;
+    }
+  }
+  renderTable();
+  document.getElementById('view-patients').scrollIntoView({ behavior: 'smooth' });
+  toast('Showing: ' + (status === 'Pending' ? 'Pending & Waiting List' : status || 'All patients'), 'info');
+}
+
+// ===== ALERTS =====
+function renderAlerts() {
+  const t = new Date(); t.setHours(0,0,0,0);
+  const soon = patients.filter(p => { if (!p.surgeryDate || p.status === 'Completed') return false; return Math.ceil((new Date(p.surgeryDate)-t)/864e5) <= 7; });
+  const breach = patients.filter(p => p.status !== 'Completed' && ['r','a'].includes(breachInfo(p)?.rag));
+  const incomplete = patients.filter(p => {
+    if (!p.surgeryDate || p.status === 'Completed') return false;
+    const diff = Math.ceil((new Date(p.surgeryDate)-t)/864e5);
+    if (diff > 2) return false;
+    return CHECKLIST.some(i => !p.checklist?.[i.id]?.done);
+  });
+  const total = soon.length + incomplete.length + breach.length;
+  const banner = document.getElementById('alerts-banner');
+  if (!total) { banner.style.display = 'none'; return; }
+  banner.style.display = 'flex';
+  document.getElementById('ab-badge').textContent = total;
+  const parts = [];
+  if (incomplete.length) parts.push(`${incomplete.length} incomplete pre-op checklist${incomplete.length>1?'s':''} (surgery ≤48h)`);
+  if (soon.length) parts.push(`${soon.length} surger${soon.length>1?'ies':'y'} within 7 days`);
+  if (breach.length) parts.push(`${breach.length} patient${breach.length>1?'s':''} at breach risk`);
+  document.getElementById('ab-text').textContent = parts.join(' · ');
+}
+
+// ===== TABLE =====
+function getFiltered() {
+  const q = (document.getElementById('search-input')?.value || '').toLowerCase();
+  const fs = document.getElementById('f-status-filter')?.value || '';
+  const fc = document.getElementById('f-cancer-filter')?.value || '';
+  return patients.filter(p => {
+    const mq = !q || [p.name,p.id,p.mrn,p.cancerType,p.surgeon,p.procedure].some(v => (v||'').toLowerCase().includes(q));
+    let ms;
+    if (awaitingFilter) {
+      ms = p.status === 'Pending' || p.status === 'Waiting List';
+    } else {
+      ms = !fs || p.status === fs;
+    }
+    const mc = !fc || p.cancerType === fc;
+    return mq && ms && mc;
+  });
+}
+
+function sortBy(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
+  document.querySelectorAll('.sort-arr').forEach(el => { el.textContent = '↕'; el.classList.remove('on'); });
+  const el = document.getElementById('sa-' + col);
+  if (el) { el.textContent = sortDir === 1 ? '↑' : '↓'; el.classList.add('on'); }
+  renderTable();
+}
+
+function renderTable() {
+  let list = getFiltered().sort((a, b) => {
+    const va = a[sortCol] || ''; const vb = b[sortCol] || '';
+    return va < vb ? -sortDir : va > vb ? sortDir : 0;
+  });
+  document.getElementById('table-count').textContent = `${list.length} patient${list.length !== 1 ? 's' : ''}`;
+  const t = new Date(); t.setHours(0,0,0,0);
+  const tbody = document.getElementById('patient-tbody');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="ei">🔍</div><h3>No patients found</h3><p>Adjust search or filters</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(p => {
+    const b = breachInfo(p);
+    const cl = p.checklist || {};
+    const done = CHECKLIST.filter(i => cl[i.id]?.done).length;
+    const clColor = done === CHECKLIST.length ? 'var(--green)' : done > 0 ? 'var(--gold)' : 'var(--text3)';
+    let dateStr = '—', dateCls = 'date-cell';
+    if (p.surgeryDate) {
+      const diff = Math.ceil((new Date(p.surgeryDate)-t)/864e5);
+      dateStr = formatDate(p.surgeryDate);
+      if (diff < 0 && p.status !== 'Completed') dateCls += ' date-overdue';
+      else if (diff <= 7 && p.status !== 'Completed') dateCls += ' date-soon';
+    }
+    const ragCol = b && p.status !== 'Completed' ? { r:'var(--red)', a:'var(--gold)', g:'var(--green)' }[b.rag] : 'var(--text3)';
+    const ragLbl = b && p.status !== 'Completed' ? `<div style="font-size:11px;color:${ragCol};font-weight:600">${b.weeks}w / 62w · ${b.pct}%</div><div class="mini-breach"><div class="mini-fill mf-${b.rag}" style="width:${b.pct}%"></div></div>` : '<span style="color:var(--text3);font-size:12px">—</span>';
+    return `<tr onclick="viewPatient('${p.id}')">
+      <td><div class="p-sub">${p.id}</div></td>
+      <td><div class="p-name">${p.name}</div><div class="p-sub">${p.mrn || ''}</div></td>
+      <td>${p.dob ? calcAge(p.dob) : '—'}</td>
+      <td>${p.cancerType || '—'}<div class="p-sub">${p.procedure || ''}</div></td>
+      <td>${statusBadge(p.status)}</td>
+      <td class="${dateCls}">${dateStr}${p.surgeryTime?`<div class="p-sub">${p.surgeryTime}</div>`:''}</td>
+      <td style="font-size:13px">${p.surgeon || '<span style="color:var(--text3)">Unassigned</span>'}</td>
+      <td>${ragLbl}</td>
+      <td><span class="cl-mini" style="color:${clColor};font-weight:600">${done}/${CHECKLIST.length} done</span></td>
+      <td onclick="event.stopPropagation()"><div class="act-cell">
+        <button class="btn btn-sm btn-ghost" onclick="openEdit('${p.id}')" title="Edit">✏️</button>
+        <button class="btn btn-sm btn-danger" onclick="deletePatient('${p.id}')" title="Delete">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== UPCOMING =====
+function renderUpcoming() {
+  const t = new Date(); t.setHours(0,0,0,0);
+  const list = patients
+    .filter(p => p.surgeryDate && p.status !== 'Completed')
+    .map(p => ({ ...p, _diff: Math.ceil((new Date(p.surgeryDate)-t)/864e5) }))
+    .sort((a,b) => a._diff - b._diff);
+  const c = document.getElementById('upcoming-list');
+  if (!list.length) { c.innerHTML = `<div class="empty-state"><div class="ei">📅</div><h3>No upcoming surgeries</h3><p>Scheduled surgeries appear here</p></div>`; return; }
+  c.innerHTML = list.map(p => {
+    const over = p._diff < 0; const soon = p._diff <= 7 && !over;
+    const col = over ? 'var(--red)' : soon ? 'var(--gold)' : 'var(--teal)';
+    const label = over ? `${Math.abs(p._diff)}d overdue` : p._diff === 0 ? 'TODAY' : `${p._diff} day${p._diff!==1?'s':''} away`;
+    return `<div class="upcoming-card" onclick="viewPatient('${p.id}')" style="${over?'border-left:3px solid var(--red)':soon?'border-left:3px solid var(--gold)':''}">
+      <div>${statusBadge(p.status)}</div>
+      <div class="uc-info"><h4>${p.name}</h4><p>${p.cancerType} · ${p.procedure||'TBC'} · ${p.surgeon||'Unassigned'}</p></div>
+      <div class="uc-date"><div class="uc-d" style="color:${col}">${formatDate(p.surgeryDate)}</div><div class="uc-days" style="color:${col}">${label}</div></div>
+      <button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();openEdit('${p.id}')">✏️</button>
+    </div>`;
+  }).join('');
+}
+
+// ===== BREACH VIEW =====
+function renderBreach() {
+  const list = patients
+    .filter(p => p.status !== 'Completed')
+    .map(p => ({ ...p, b: breachInfo(p) }))
+    .filter(p => p.b)
+    .sort((a,b) => b.b.pct - a.b.pct);
+  const c = document.getElementById('breach-list');
+  if (!c) return;
+  if (!list.length) { c.innerHTML = `<div class="empty-state"><div class="ei">⏱</div><h3>No active patients with referral dates</h3></div>`; return; }
+  c.innerHTML = `<div class="table-wrap"><div style="overflow-x:auto"><table>
+    <thead><tr>
+      <th>Patient</th><th>Cancer Type</th><th>Referred</th>
+      <th>Weeks Used</th><th>Weeks Left</th><th>62-Week Pathway</th><th>RAG</th>
+    </tr></thead>
+    <tbody>${list.map(p => {
+      const col = { r:'var(--red)', a:'var(--gold)', g:'var(--green)' }[p.b.rag];
+      const rag = { r:'🔴 Breached', a:'🟡 At Risk', g:'🟢 On Track' }[p.b.rag];
+      return `<tr onclick="viewPatient('${p.id}')">
+        <td><div class="p-name">${p.name}</div><div class="p-sub">${p.id}</div></td>
+        <td>${p.cancerType||'—'}</td>
+        <td class="date-cell">${formatDate(p.referralDate)}</td>
+        <td style="font-family:'DM Mono',monospace;color:${col};font-weight:600">${p.b.weeks}w</td>
+        <td style="font-family:'DM Mono',monospace">${p.b.weeksLeft}w</td>
+        <td style="min-width:160px">
+          <div class="mini-breach" style="width:100%;height:8px">
+            <div class="mini-fill mf-${p.b.rag}" style="width:${p.b.pct}%"></div>
+          </div>
+          <div style="font-size:11px;color:${col};margin-top:3px">${p.b.pct}% of 62-week pathway used</div>
+        </td>
+        <td><span style="color:${col};font-weight:600;font-size:13px">${rag}</span></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table></div></div>`;
+}
+
+// ===== VIEW PATIENT =====
+function viewPatient(id) {
+  const p = patients.find(x => x.id === id); if (!p) return;
+  const b = breachInfo(p);
+  const cl = p.checklist || {};
+  document.getElementById('detail-title').textContent = p.name;
+  let html = `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">${statusBadge(p.status)}<span class="badge b-waiting">${p.priority||'Routine'}</span></div>`;
+
+  // Breach bar
+  if (b && p.status !== 'Completed') {
+    const col = { r:'var(--red)', a:'var(--gold)', g:'var(--green)' }[b.rag];
+    html += `<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius2);padding:14px 16px;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px">
+        <span style="color:var(--text2);font-weight:600">⏱ 62-Week RTT Pathway</span>
+        <span style="color:${col};font-weight:700">${b.weeks} wks used · ${b.weeksLeft} wks remaining</span>
+      </div>
+      <div class="breach-bar-bg"><div class="breach-bar-fill bbf-${b.rag}" style="width:${b.pct}%"></div></div>
+      <div class="breach-label-row"><span>Referred: ${formatDate(p.referralDate)}</span><span style="color:${col}">${b.pct}% of 62-week pathway</span></div>
+    </div>`;
+  }
+
+  html += `<div class="sec-div">Patient Details</div>
+  <div class="detail-grid">
+    <div><div class="d-label">MRN</div><div class="d-val" style="font-family:'DM Mono',monospace">${p.mrn||'—'}</div></div>
+    <div><div class="d-label">DOB / Age</div><div class="d-val">${p.dob?formatDate(p.dob)+' ('+calcAge(p.dob)+'y)':'—'}</div></div>
+    <div><div class="d-label">Phone</div><div class="d-val">${p.phone||'—'}</div></div>
+    <div><div class="d-label">GP / Referrer</div><div class="d-val">${p.gp||'—'}</div></div>
+    <div><div class="d-label">Referral Date</div><div class="d-val">${p.referralDate?formatDate(p.referralDate):'—'}</div></div>
+    <div><div class="d-label">First Appointment</div><div class="d-val">${p.firstAppt?formatDate(p.firstAppt):'—'}</div></div>
+  </div>
+  <div class="sec-div">Oncology</div>
+  <div class="detail-grid">
+    <div><div class="d-label">Cancer Type</div><div class="d-val">${p.cancerType||'—'}</div></div>
+    <div><div class="d-label">Stage / Grade</div><div class="d-val">${p.stage||'—'}</div></div>
+    <div><div class="d-label">Procedure</div><div class="d-val">${p.procedure||'—'}</div></div>
+    <div><div class="d-label">Laterality</div><div class="d-val">${p.laterality||'—'}</div></div>
+  </div>
+  ${p.notes ? `<div class="notes-box" style="margin-top:10px">${p.notes}</div>` : ''}
+  <div class="sec-div">Surgery</div>
+  <div class="detail-grid">
+    <div><div class="d-label">Date</div><div class="d-val">${p.surgeryDate?formatDate(p.surgeryDate):'Not scheduled'}</div></div>
+    <div><div class="d-label">Time</div><div class="d-val">${p.surgeryTime||'—'}</div></div>
+    <div><div class="d-label">Surgeon</div><div class="d-val">${p.surgeon||'Unassigned'}</div></div>
+    <div><div class="d-label">Theatre</div><div class="d-val">${p.theatre||'—'}</div></div>
+  </div>
+  ${p.anaes ? `<div style="margin-top:10px"><div class="d-label" style="margin-bottom:5px">Anaesthetist Notes</div><div class="notes-box">${p.anaes}</div></div>` : ''}
+  <div class="sec-div">Pre-Op Checklist</div>
+  <div class="checklist">
+    ${CHECKLIST.map(item => {
+      const c = cl[item.id] || { done: false };
+      return `<div class="check-item ${c.done?'done':''}" onclick="toggleCheck('${p.id}','${item.id}')">
+        <div class="check-box">${c.done?'✓':''}</div>
+        <span class="check-name">${item.icon} ${item.label}</span>
+        <span class="check-meta">${c.done ? `Done by ${c.by||'?'} · ${c.date||''}` : 'Not completed'}</span>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  document.getElementById('detail-body').innerHTML = html;
+  document.getElementById('detail-edit').onclick = () => { closeModal('modal-detail'); openEdit(id); };
+  document.getElementById('detail-del').onclick = () => deletePatient(id);
+  openModal('modal-detail');
+}
+
+function toggleCheck(pid, cid) {
+  const p = patients.find(x => x.id === pid); if (!p) return;
+  if (!p.checklist) p.checklist = {};
+  if (!p.checklist[cid]) p.checklist[cid] = { done: false };
+  p.checklist[cid].done = !p.checklist[cid].done;
+  if (p.checklist[cid].done) { p.checklist[cid].by = 'Staff'; p.checklist[cid].date = today(); }
+  saveData(); renderAll(); viewPatient(pid);
+}
+
+// ===== ADD / EDIT =====
+function openAdd() {
+  editingId = null; formChecklist = {};
+  document.getElementById('form-title').textContent = 'Add New Patient';
+  clearForm();
+  document.getElementById('f-referral-date').value = today();
+  switchTab(0); renderFormChecklist();
+  openModal('modal-form');
+}
+
+function openEdit(id) {
+  const p = patients.find(x => x.id === id); if (!p) return;
+  editingId = id; formChecklist = JSON.parse(JSON.stringify(p.checklist || {}));
+  document.getElementById('form-title').textContent = 'Edit: ' + p.name;
+  document.getElementById('f-name').value = p.name || '';
+  document.getElementById('f-dob').value = p.dob || '';
+  document.getElementById('f-mrn').value = p.mrn || '';
+  document.getElementById('f-phone').value = p.phone || '';
+  document.getElementById('f-gp').value = p.gp || '';
+  document.getElementById('f-referral-date').value = p.referralDate || '';
+  document.getElementById('f-first-appt').value = p.firstAppt || '';
+  document.getElementById('f-cancer').value = p.cancerType || '';
+  document.getElementById('f-stage').value = p.stage || '';
+  document.getElementById('f-procedure').value = p.procedure || '';
+  document.getElementById('f-laterality').value = p.laterality || '';
+  document.getElementById('f-notes').value = p.notes || '';
+  document.getElementById('f-status').value = p.status || 'Pending';
+  document.getElementById('f-priority').value = p.priority || 'Routine';
+  document.getElementById('f-surgery-date').value = p.surgeryDate || '';
+  document.getElementById('f-surgery-time').value = p.surgeryTime || '';
+  document.getElementById('f-surgeon').value = p.surgeon || '';
+  document.getElementById('f-theatre').value = p.theatre || '';
+  document.getElementById('f-anaes').value = p.anaes || '';
+  switchTab(0); renderFormChecklist();
+  openModal('modal-form');
+}
+
+function renderFormChecklist() {
+  document.getElementById('form-checklist').innerHTML = CHECKLIST.map(item => {
+    const c = formChecklist[item.id] || { done: false };
+    return `<div class="check-item ${c.done?'done':''}" onclick="toggleFormCheck('${item.id}')">
+      <div class="check-box">${c.done?'✓':''}</div>
+      <span class="check-name">${item.icon} ${item.label}</span>
+      <span class="check-meta">${c.done ? `Done · ${c.date||''}` : 'Tap to mark done'}</span>
+    </div>`;
+  }).join('');
+}
+
+function toggleFormCheck(cid) {
+  if (!formChecklist[cid]) formChecklist[cid] = { done: false };
+  formChecklist[cid].done = !formChecklist[cid].done;
+  if (formChecklist[cid].done) { formChecklist[cid].by = 'Staff'; formChecklist[cid].date = today(); }
+  renderFormChecklist();
+}
+
+function clearForm() {
+  ['f-name','f-dob','f-mrn','f-phone','f-gp','f-referral-date','f-first-appt',
+   'f-cancer','f-stage','f-procedure','f-surgery-date','f-surgery-time',
+   'f-surgeon','f-theatre','f-notes','f-anaes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('f-laterality').value = '';
+  document.getElementById('f-status').value = 'Pending';
+  document.getElementById('f-priority').value = 'Routine';
+}
+
+function savePatient() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { toast('Patient name is required', 'error'); switchTab(0); return; }
+  const p = {
+    id: editingId || nextId(),
+    name, dob: document.getElementById('f-dob').value,
+    mrn: document.getElementById('f-mrn').value.trim(),
+    phone: document.getElementById('f-phone').value.trim(),
+    gp: document.getElementById('f-gp').value.trim(),
+    referralDate: document.getElementById('f-referral-date').value,
+    firstAppt: document.getElementById('f-first-appt').value,
+    cancerType: document.getElementById('f-cancer').value,
+    stage: document.getElementById('f-stage').value.trim(),
+    procedure: document.getElementById('f-procedure').value.trim(),
+    laterality: document.getElementById('f-laterality').value,
+    notes: document.getElementById('f-notes').value.trim(),
+    status: document.getElementById('f-status').value,
+    priority: document.getElementById('f-priority').value,
+    surgeryDate: document.getElementById('f-surgery-date').value,
+    surgeryTime: document.getElementById('f-surgery-time').value,
+    surgeon: document.getElementById('f-surgeon').value.trim(),
+    theatre: document.getElementById('f-theatre').value.trim(),
+    anaes: document.getElementById('f-anaes').value.trim(),
+    checklist: formChecklist,
+    createdAt: editingId ? (patients.find(x => x.id === editingId)?.createdAt || today()) : today(),
+    updatedAt: today(),
+  };
+  if (editingId) { const i = patients.findIndex(x => x.id === editingId); patients[i] = p; }
+  else patients.push(p);
+  saveData(); closeModal('modal-form'); renderAll();
+  toast(editingId ? 'Patient updated' : 'Patient added', 'success');
+}
+
+function deletePatient(id) {
+  if (!confirm('Delete this patient record? This cannot be undone.')) return;
+  patients = patients.filter(p => p.id !== id);
+  saveData(); closeModal('modal-detail'); renderAll();
+  toast('Patient deleted', 'info');
+}
+
+function nextId() {
+  const nums = patients.map(p => parseInt(p.id.replace('P-','')) || 0);
+  return 'P-' + String((Math.max(0,...nums)+1)).padStart(3,'0');
+}
+
+// ===== ANALYTICS =====
+function renderAnalytics() {
+  const container = document.getElementById('analytics-content');
+  if (!container) return;
+
+  const total = patients.length;
+  const byStatus = {};
+  const byCancer = {};
+  const bySurgeon = {};
+  const byMonth = {};
+  const breachCounts = { r: 0, a: 0, g: 0 };
+
+  patients.forEach(p => {
+    // Status
+    byStatus[p.status] = (byStatus[p.status] || 0) + 1;
+    // Cancer type
+    if (p.cancerType) byCancer[p.cancerType] = (byCancer[p.cancerType] || 0) + 1;
+    // Surgeon
+    if (p.surgeon) bySurgeon[p.surgeon] = (bySurgeon[p.surgeon] || 0) + 1;
+    // Surgery by month
+    if (p.surgeryDate) {
+      const m = p.surgeryDate.substring(0, 7);
+      byMonth[m] = (byMonth[m] || 0) + 1;
+    }
+    // Breach
+    if (p.status !== 'Completed') {
+      const b = breachInfo(p);
+      if (b) breachCounts[b.rag]++;
+    }
+  });
+
+  const completed = patients.filter(p => p.status === 'Completed').length;
+  const compRate = total ? Math.round(completed / total * 100) : 0;
+  const urgent = patients.filter(p => p.status === 'Urgent').length;
+  const clDone = patients.map(p => {
+    const cl = p.checklist || {};
+    return CHECKLIST.filter(i => cl[i.id]?.done).length;
+  });
+  const avgCl = clDone.length ? Math.round(clDone.reduce((a,b) => a+b, 0) / clDone.length * 10) / 10 : 0;
+
+  // Colors
+  const statusColors = { Pending:'#f5a623', Scheduled:'#00c9a7', Urgent:'#e05c5c', 'Waiting List':'#9aafc7', Completed:'#4caf82' };
+  const cancerColors = ['#00c9a7','#3b82f6','#a855f7','#f5a623','#e05c5c','#4caf82'];
+
+  // Build sorted months for line chart
+  const months = Object.keys(byMonth).sort();
+  const maxMonthVal = Math.max(...Object.values(byMonth), 1);
+  const chartW = 500; const chartH = 140; const padL = 30; const padB = 30; const padT = 10; const padR = 10;
+  const plotW = chartW - padL - padR;
+  const plotH = chartH - padT - padB;
+
+  let linePoints = '';
+  let lineDots = '';
+  let lineLabels = '';
+  if (months.length > 0) {
+    const pts2 = months.map((m, i) => {
+      const x = padL + (months.length === 1 ? plotW / 2 : i / (months.length - 1) * plotW);
+      const y = padT + plotH - (byMonth[m] / maxMonthVal * plotH);
+      return { x, y, m, v: byMonth[m] };
+    });
+    linePoints = pts2.map(p => `${p.x},${p.y}`).join(' ');
+    lineDots = pts2.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4" fill="#00c9a7"/><title>${p.m}: ${p.v}</title>`).join('');
+    lineLabels = pts2.filter((_, i) => i === 0 || i === pts2.length - 1 || pts2.length <= 6).map(p => {
+      const short = p.m.substring(5) + '/' + p.m.substring(2,4);
+      return `<text x="${p.x}" y="${chartH - 4}" text-anchor="middle" font-size="9" fill="#5e7a9a">${short}</text>`;
+    }).join('');
+  }
+
+  // Donut chart for status
+  function donut(data, colors, size) {
+    const total2 = Object.values(data).reduce((a,b) => a+b, 0);
+    if (!total2) return '<text x="60" y="64" text-anchor="middle" font-size="11" fill="#5e7a9a">No data</text>';
+    let angle = -90; const cx = 60; const cy = 60; const r = 48; const ir = 28;
+    return Object.entries(data).map(([key, val], i) => {
+      const pct = val / total2;
+      const startA = angle * Math.PI / 180;
+      angle += pct * 360;
+      const endA = angle * Math.PI / 180;
+      const x1 = cx + r * Math.cos(startA); const y1 = cy + r * Math.sin(startA);
+      const x2 = cx + r * Math.cos(endA);   const y2 = cy + r * Math.sin(endA);
+      const ix1 = cx + ir * Math.cos(startA); const iy1 = cy + ir * Math.sin(startA);
+      const ix2 = cx + ir * Math.cos(endA);   const iy2 = cy + ir * Math.sin(endA);
+      const large = pct > 0.5 ? 1 : 0;
+      const col = colors[key] || colors[i] || '#9aafc7';
+      return `<path d="M${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${ix2},${iy2} A${ir},${ir} 0 ${large},0 ${ix1},${iy1} Z" fill="${col}"><title>${key}: ${val} (${Math.round(pct*100)}%)</title></path>`;
+    }).join('');
+  }
+
+  // Bar chart for cancer types
+  const cancerEntries = Object.entries(byCancer).sort((a,b) => b[1]-a[1]);
+  const maxC = Math.max(...cancerEntries.map(e => e[1]), 1);
+  const barH = 24; const barGap = 8;
+  const barsHTML = cancerEntries.map(([name, val], i) => {
+    const w = Math.max(4, Math.round(val / maxC * 200));
+    const col = cancerColors[i % cancerColors.length];
+    const y = i * (barH + barGap);
+    return `<g transform="translate(0,${y})">
+      <text x="0" y="${barH/2+5}" font-size="11" fill="#9aafc7">${name}</text>
+      <rect x="90" y="0" width="${w}" height="${barH}" rx="4" fill="${col}"/>
+      <text x="${90+w+6}" y="${barH/2+5}" font-size="11" fill="#e8edf5" font-weight="600">${val}</text>
+    </g>`;
+  }).join('');
+  const barsHeight = Math.max(60, cancerEntries.length * (barH + barGap));
+
+  // Surgeon workload
+  const surgEntries = Object.entries(bySurgeon).sort((a,b) => b[1]-a[1]).slice(0, 6);
+  const maxS = Math.max(...surgEntries.map(e => e[1]), 1);
+  const surgBars = surgEntries.map(([name, val], i) => {
+    const w = Math.max(4, Math.round(val / maxS * 180));
+    const y = i * (barH + barGap);
+    return `<g transform="translate(0,${y})">
+      <text x="0" y="${barH/2+5}" font-size="10" fill="#9aafc7">${name.length > 14 ? name.substring(0,13)+'…' : name}</text>
+      <rect x="105" y="0" width="${w}" height="${barH}" rx="4" fill="#3b82f6"/>
+      <text x="${105+w+6}" y="${barH/2+5}" font-size="11" fill="#e8edf5" font-weight="600">${val}</text>
+    </g>`;
+  }).join('');
+  const surgHeight = Math.max(60, surgEntries.length * (barH + barGap));
+
+  container.innerHTML = `
+    <!-- KPI ROW -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px">
+      <div class="stat-card st st-green" style="text-align:center">
+        <div class="stat-label">Completion Rate</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#4caf82">${compRate}%</div>
+        <div class="stat-sub">${completed} of ${total} patients</div>
+      </div>
+      <div class="stat-card st st-red" style="text-align:center">
+        <div class="stat-label">Urgent Cases</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#e05c5c">${urgent}</div>
+        <div class="stat-sub">Need immediate action</div>
+      </div>
+      <div class="stat-card st st-teal" style="text-align:center">
+        <div class="stat-label">Avg Pre-Op Done</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#00c9a7">${avgCl}</div>
+        <div class="stat-sub">of ${CHECKLIST.length} items avg</div>
+      </div>
+      <div class="stat-card st st-red" style="text-align:center">
+        <div class="stat-label">Breach Risk</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#e05c5c">${breachCounts.r}</div>
+        <div class="stat-sub">${breachCounts.a} at risk · ${breachCounts.g} on track</div>
+      </div>
+    </div>
+
+    <!-- STATUS DONUT + CANCER BARS -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- STATUS DONUT -->
+      <div class="stat-card">
+        <div class="stat-label" style="margin-bottom:10px">Status Breakdown</div>
+        <svg viewBox="0 0 180 120" style="width:100%;max-width:180px;display:block;margin:0 auto">
+          ${donut(byStatus, statusColors, 120)}
+          <text x="60" y="56" text-anchor="middle" font-size="18" font-weight="700" fill="#e8edf5">${total}</text>
+          <text x="60" y="70" text-anchor="middle" font-size="9" fill="#9aafc7">patients</text>
+          <!-- Legend -->
+          ${Object.entries(byStatus).map(([s,v],i) => {
+            const col = statusColors[s] || '#9aafc7';
+            const lx = 128; const ly = 16 + i * 18;
+            return `<rect x="${lx}" y="${ly-8}" width="8" height="8" rx="2" fill="${col}"/>
+                    <text x="${lx+12}" y="${ly}" font-size="9" fill="#9aafc7">${s} (${v})</text>`;
+          }).join('')}
+        </svg>
+      </div>
+
+      <!-- CANCER TYPE BARS -->
+      <div class="stat-card">
+        <div class="stat-label" style="margin-bottom:10px">By Cancer Type</div>
+        ${cancerEntries.length ? `<svg viewBox="0 0 300 ${barsHeight}" style="width:100%;overflow:visible">${barsHTML}</svg>` : '<p style="font-size:12px;color:#5e7a9a">No data yet</p>'}
+      </div>
+    </div>
+
+    <!-- SURGERIES OVER TIME LINE CHART -->
+    <div class="stat-card" style="margin-bottom:14px">
+      <div class="stat-label" style="margin-bottom:10px">Surgeries Over Time</div>
+      ${months.length ? `
+      <svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%">
+        <!-- Grid lines -->
+        ${[0,0.25,0.5,0.75,1].map(f => {
+          const y = padT + plotH * (1-f);
+          const v = Math.round(maxMonthVal * f);
+          return `<line x1="${padL}" y1="${y}" x2="${chartW-padR}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                  <text x="${padL-4}" y="${y+4}" text-anchor="end" font-size="9" fill="#5e7a9a">${v}</text>`;
+        }).join('')}
+        <!-- Area fill -->
+        <defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#00c9a7" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#00c9a7" stop-opacity="0"/>
+        </linearGradient></defs>
+        <polygon points="${linePoints} ${chartW-padR},${padT+plotH} ${padL},${padT+plotH}" fill="url(#lg1)"/>
+        <!-- Line -->
+        <polyline points="${linePoints}" fill="none" stroke="#00c9a7" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Dots -->
+        ${lineDots}
+        <!-- Labels -->
+        ${lineLabels}
+      </svg>` : '<p style="font-size:12px;color:#5e7a9a">No surgery dates recorded yet</p>'}
+    </div>
+
+    <!-- SURGEON WORKLOAD -->
+    <div class="stat-card" style="margin-bottom:14px">
+      <div class="stat-label" style="margin-bottom:10px">Surgeon Workload</div>
+      ${surgEntries.length ? `<svg viewBox="0 0 300 ${surgHeight}" style="width:100%;overflow:visible">${surgBars}</svg>` : '<p style="font-size:12px;color:#5e7a9a">No surgeons assigned yet</p>'}
+    </div>
+
+    <!-- BREACH DONUT -->
+    <div class="stat-card" style="margin-bottom:14px">
+      <div class="stat-label" style="margin-bottom:10px">62-Week Breach Overview</div>
+      <svg viewBox="0 0 180 120" style="width:100%;max-width:180px;display:block;margin:0 auto">
+        ${donut({'Breached':breachCounts.r,'At Risk':breachCounts.a,'On Track':breachCounts.g}, {'Breached':'#e05c5c','At Risk':'#f5a623','On Track':'#4caf82'}, 120)}
+        <text x="60" y="56" text-anchor="middle" font-size="16" font-weight="700" fill="#e8edf5">${breachCounts.r+breachCounts.a+breachCounts.g}</text>
+        <text x="60" y="70" text-anchor="middle" font-size="9" fill="#9aafc7">active</text>
+        <rect x="128" y="8" width="8" height="8" rx="2" fill="#e05c5c"/>
+        <text x="140" y="16" font-size="9" fill="#9aafc7">Breached (${breachCounts.r})</text>
+        <rect x="128" y="26" width="8" height="8" rx="2" fill="#f5a623"/>
+        <text x="140" y="34" font-size="9" fill="#9aafc7">At Risk (${breachCounts.a})</text>
+        <rect x="128" y="44" width="8" height="8" rx="2" fill="#4caf82"/>
+        <text x="140" y="52" font-size="9" fill="#9aafc7">On Track (${breachCounts.g})</text>
+      </svg>
+    </div>
+  `;
+}
+
+// ===== EXPORT =====
+function exportCSV() {
+  const hdrs = ['ID','Name','DOB','Age','MRN','Phone','GP','Referral Date','First Appt','Cancer Type','Stage','Procedure','Laterality','Status','Priority','Surgery Date','Surgery Time','Surgeon','Theatre','Breach Weeks','Breach %','RAG','Pre-Op Done','Notes','Anaes Notes'];
+  const rows = patients.map(p => {
+    const b = breachInfo(p); const cl = p.checklist || {};
+    const done = CHECKLIST.filter(i => cl[i.id]?.done).length;
+    return [p.id,p.name,p.dob,p.dob?calcAge(p.dob):'',p.mrn,p.phone,p.gp,p.referralDate,p.firstAppt,p.cancerType,p.stage,p.procedure,p.laterality,p.status,p.priority,p.surgeryDate,p.surgeryTime,p.surgeon,p.theatre,b?b.weeks+'w':'',b?b.pct+'%':'',b?{r:'BREACHED',a:'AT RISK',g:'ON TRACK'}[b.rag]:'',`${done}/${CHECKLIST.length}`,(p.notes||'').replace(/\n/g,' '),(p.anaes||'').replace(/\n/g,' ')]
+      .map(v => `"${(v||'').toString().replace(/"/g,'""')}"`);
+  });
+  const csv = [hdrs.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+  a.download = `andrology_patients_${today()}.csv`;
+  a.click();
+  toast('CSV exported', 'success');
+}
+
+// ===== EMAIL =====
+function openEmail() {
+  const t = new Date(); t.setHours(0,0,0,0);
+  const urgent = patients.filter(p => p.status === 'Urgent');
+  const soon = patients.filter(p => { if (!p.surgeryDate || p.status === 'Completed') return false; return Math.ceil((new Date(p.surgeryDate)-t)/864e5) <= 7; });
+  const breachR = patients.filter(p => p.status !== 'Completed' && breachInfo(p)?.rag === 'r');
+  const incomplete = patients.filter(p => { if (!p.surgeryDate || p.status === 'Completed') return false; const d = Math.ceil((new Date(p.surgeryDate)-t)/864e5); if (d > 2) return false; return CHECKLIST.some(i => !p.checklist?.[i.id]?.done); });
+  let body = `ANDROLOGY DEPARTMENT — SURGICAL TRACKER ALERT\nDate: ${new Date().toLocaleDateString('en-GB')}\n\n`;
+  if (urgent.length) body += `URGENT PATIENTS (${urgent.length}):\n${urgent.map(p=>`  • ${p.name} — ${p.cancerType||''} — Surgery: ${p.surgeryDate?formatDate(p.surgeryDate):'TBC'}`).join('\n')}\n\n`;
+  if (soon.length) body += `SURGERY WITHIN 7 DAYS (${soon.length}):\n${soon.map(p=>{const d=Math.ceil((new Date(p.surgeryDate)-t)/864e5);return`  • ${p.name} — ${formatDate(p.surgeryDate)} (${d===0?'TODAY':d+'d'}) — ${p.surgeon||'Unassigned'}`;}).join('\n')}\n\n`;
+  if (incomplete.length) body += `INCOMPLETE PRE-OP CHECKLIST (≤48h to surgery):\n${incomplete.map(p=>{const cl=p.checklist||{};const missing=CHECKLIST.filter(i=>!cl[i.id]?.done).map(i=>i.label);return`  • ${p.name} — Missing: ${missing.join(', ')}`;}).join('\n')}\n\n`;
+  if (breachR.length) body += `62-WEEK BREACH EXCEEDED:\n${breachR.map(p=>{const b=breachInfo(p);return`  • ${p.name} — ${b.weeks} weeks since referral`;}).join('\n')}\n\n`;
+  if (!urgent.length&&!soon.length&&!incomplete.length&&!breachR.length) body += 'No urgent alerts at this time.\n';
+  document.getElementById('email-preview').textContent = body;
+  openModal('modal-email');
+}
+
+function sendEmail() {
+  const to = document.getElementById('email-to').value;
+  const body = document.getElementById('email-preview').textContent;
+  const subject = `Andrology Surgical Alert — ${new Date().toLocaleDateString('en-GB')}`;
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  closeModal('modal-email');
+  toast('Email client opened', 'info');
+}
+
+// ===== TABS =====
+function showTab(name) {
+  ['patients','upcoming','breach','analytics','export'].forEach(n => {
+    document.getElementById('view-' + n).style.display = n === name ? '' : 'none';
+    document.getElementById('tab-' + n).classList.toggle('active', n === name);
+  });
+  if (name === 'upcoming')  renderUpcoming();
+  if (name === 'breach')    renderBreach();
+  if (name === 'analytics') renderAnalytics();
+}
+
+function switchTab(n) {
+  currentTab = n;
+  document.querySelectorAll('.mtab').forEach((t,i) => t.classList.toggle('active', i === n));
+  document.querySelectorAll('.mtab-section').forEach((s,i) => s.classList.toggle('active', i === n));
+}
+
+// Login + banner wiring - touchstart for iOS Safari
+window.addEventListener('load', function() {
+  var btn = document.getElementById('login-btn');
+  var pw  = document.getElementById('login-pw');
+  function tryLogin() { doLogin(); }
+  if (btn) {
+    btn.addEventListener('touchstart', function(e) { e.preventDefault(); tryLogin(); }, { passive: false });
+    btn.addEventListener('click', function() { tryLogin(); });
+  }
+  if (pw) {
+    pw.addEventListener('keyup', function(e) { if (e.key === 'Enter' || e.keyCode === 13) tryLogin(); });
+  }
+  var bb = document.getElementById('banner-btn');
+  if (bb) {
+    bb.addEventListener('touchstart', function(e) { e.preventDefault(); showTab('upcoming'); }, { passive: false });
+    bb.addEventListener('click', function() { showTab('upcoming'); });
+  }
+});
+
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+
+// ===== HELPERS =====
+function formatDate(d) {
+  if (!d) return '—';
+  const [y,m,dy] = d.split('-');
+  return `${parseInt(dy)} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1]} ${y}`;
+}
+function calcAge(dob) {
+  if (!dob) return '?';
+  const t = new Date(); const b = new Date(dob);
+  let a = t.getFullYear() - b.getFullYear();
+  if (t.getMonth() < b.getMonth() || (t.getMonth() === b.getMonth() && t.getDate() < b.getDate())) a--;
+  return a;
+}
+function statusBadge(s) {
+  const m = { Pending:['b-pending','⏳'], Scheduled:['b-scheduled','📅'], Urgent:['b-urgent','🚨'], 'Waiting List':['b-waiting','⏸'], Completed:['b-completed','✅'] };
+  const [cls,icon] = m[s] || ['b-waiting','?'];
+  return `<span class="badge ${cls}"><span class="b-dot bd-${cls.replace('b-','')}"></span>${icon} ${s}</span>`;
+}
+function toast(msg, type = 'info') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = `toast t-${type}`;
+  t.innerHTML = `<span>${{success:'✅',error:'❌',info:'ℹ️'}[type]||'ℹ️'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+</script>
+</body>
+</html>
